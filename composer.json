@@ -1,0 +1,41 @@
+{
+    "name": "shrikeh/symfony-http-kernel",
+    "description": "A testable, environment-driven variant of the default generated kernel created by Symfony.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Barney Hanlon",
+            "email": "barney@shrikeh.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4",
+        "shrikeh/file": "^0.2.0",
+        "symfony/framework-bundle": "^5.0",
+        "thecodingmachine/safe": "^0.1.0@dev"
+    },
+    "require-dev": {
+        "behat/behat": "^3.6",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shrikeh\\SymfonyKernel\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/lib",
+            "Tests\\Unit\\": "tests/unit/src"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    }
+}
