@@ -72,7 +72,7 @@ phan:
 
 phpcs:
 	echo 'Running codesniffer...'
-	php ${ROOT_DIR}/vendor/bin/phpcs --runtime-set ignore_warnings_on_exit true --cache -p application tests
+	php ${ROOT_DIR}/vendor/bin/phpcs --runtime-set ignore_warnings_on_exit true --cache -p src tests
 
 phpcbf:
 	php ${ROOT_DIR}/vendor/bin/phpcbf -p --runtime-set ignore_warnings_on_exit true

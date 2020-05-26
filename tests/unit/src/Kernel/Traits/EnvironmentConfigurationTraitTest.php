@@ -1,9 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-
 namespace Tests\Unit\Kernel\Traits;
-
 
 use Shrikeh\SymfonyKernel\Kernel\EnvironmentConfigurableKernelInterface;
 use Shrikeh\SymfonyKernel\Kernel\Traits\EnvironmentConfigurationTrait;
@@ -38,7 +37,7 @@ final class EnvironmentConfigurationTraitTest
      */
     private function createTraitInstance(ServerBag $serverBag, string $defaultDir = ''): object
     {
-        return new class($serverBag, $defaultDir) {
+        return new class ($serverBag, $defaultDir) {
             use EnvironmentConfigurationTrait;
 
             private string $defaultDir;
