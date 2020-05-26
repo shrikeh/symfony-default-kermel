@@ -55,9 +55,11 @@ final class DefaultKernelTest extends KernelTestCase
 
     public function testItReturnsTheProjectDir(): void
     {
+        $envProjectDir = '/foo/bar/baz';
+        $_SERVER[EnvironmentConfigurableKernelInterface::ENV_APP_PROJECT_DIR] = $envProjectDir;
         $kernel = DefaultKernel::fromArray($_SERVER);
 
-        $this->assertSame(Constants::rootDir(), $kernel->getProjectDir());
+        $this->assertSame($envProjectDir, $kernel->getProjectDir());
     }
 
     public function testItUsesTheLogDirEnvVar(): void

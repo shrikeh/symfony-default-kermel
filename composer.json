@@ -46,5 +46,8 @@
             "*": "dist"
         },
         "sort-packages": true
-    }
+    },
+  "archive": {
+    "exclude": [ "/", "!/src"]
+  }
 }
