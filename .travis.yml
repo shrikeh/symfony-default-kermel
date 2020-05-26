@@ -1,6 +1,7 @@
 language: php
 php:
-- 7.4.3
+  - 7.4.3
+  - 7.4.4
 cache:
   directories:
   - "$HOME/.composer/cache"
