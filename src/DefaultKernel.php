@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Kernel;
 
-final class DefaultKernel extends Kernel implements
+class DefaultKernel extends Kernel implements
     EnvironmentConfigurableKernelInterface,
     BundleKernelInterface
 {
@@ -35,7 +35,7 @@ final class DefaultKernel extends Kernel implements
     /**
      * @param array $server
      * @param string|null $projectDir
-     * @return static
+     * @return self
      */
     public static function fromArray(array $server, string $projectDir = null): self
     {

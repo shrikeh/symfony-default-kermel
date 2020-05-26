@@ -1,0 +1,7 @@
+---
+path: ./application
+jobs: 10
+cache: build/phplint.cache
+extensions:
+  - php
+

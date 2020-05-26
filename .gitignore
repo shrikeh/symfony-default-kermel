@@ -4,4 +4,7 @@
 /build
 /var
 /vendor
-composer.lock
+/composer.lock
+
+!/.phpcs-cache
+!/.phpunit.result.cache

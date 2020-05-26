@@ -12,10 +12,12 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Tests\Constants;
+use Tests\Traits\ResetableServerVarTrait;
 
 final class ContainerConfigurationTraitTest extends TestCase
 {
     use ProphecyTrait;
+
 
     public function testItConfiguresAContainer(): void
     {
@@ -35,6 +37,9 @@ final class ContainerConfigurationTraitTest extends TestCase
         $trait->configureContainer($containerBuilder->reveal(), $loader->reveal());
     }
 
+    /**
+     * @return object
+     */
     private function createTraitInstance(): object
     {
         return new class () {

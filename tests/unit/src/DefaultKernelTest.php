@@ -13,34 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Tests\Constants;
 use Tests\Traits\CreateDefaultKernelTrait;
+use Tests\Traits\ResetableServerVarTrait;
 
 final class DefaultKernelTest extends KernelTestCase
 {
     use ProphecyTrait;
     use CreateDefaultKernelTrait;
+    use ResetableServerVarTrait;
 
-    /**
-     * @var array
-     */
-    private array $originalEnv;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->originalEnv = $_SERVER;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $_SERVER = $this->originalEnv;
-    }
 
     /**
      * Test that the Kernel picks up the Debug mode from the $_SERVER['APP_DEBUG'] var

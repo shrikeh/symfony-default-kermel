@@ -1,0 +1,47 @@
+---
+build:
+  environment:
+    php:
+      version: "7.4.3"
+  cache:
+    disabled: false
+    directories:
+      - ~/.composer/cache
+  nodes:
+    tests:
+      commands:
+    diving:
+      tests:
+        override:
+          - vendor/bin/phpspec run
+    coverage:
+      tests:
+        override:
+          - command: vendor/bin/phpunit
+            coverage:
+              file: build/coverage/phpunit/clover.xml
+              # These formats are supported:
+              # clover, cobertura, jacoco, python-cc, ruby-cc, go-cc, lcov
+              format: clover
+    app:
+      tests:
+        override:
+          - vendor/bin/phpunit --prepend "./tests/unit/xdebug-filter.php"
+    analysis:
+      project_setup:
+        override: true
+      tests:
+        override:
+          - php-scrutinizer-run --enable-security-analysis
+          - phpcs-run
+filter:
+  paths:
+    - "application/*"
+    - "tests/*"
+  excluded_paths:
+    - "*/fixtures/*"
+    - "*/spec/*"
+    - "*/integration/*" # Codeception breaks lots of standards; ignore it
+  dependency_paths:
+    - "vendor/"
+    - "tests/mocks/"
