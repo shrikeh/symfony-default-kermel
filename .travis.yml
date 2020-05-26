@@ -17,25 +17,16 @@ before_script:
   - "./cc-test-reporter before-build"
 script:
   - php vendor/bin/phplint
-  - php vendor/bin/phpspec run
   - php vendor/bin/phpunit --prepend "./tests/unit/xdebug-filter.php"
-  - php vendor/bin/infection --debug -j2 --filter=application/app --coverage=build/coverage/phpunit/
+  - php vendor/bin/infection --debug -j2 --coverage=build/coverage/phpunit/
     --min-covered-msi=${MIN_COVERED_MSI:-95} --min-msi=${MIN_MSI:-75} --test-framework=phpunit
-  - php vendor/bin/phpcs --runtime-set ignore_warnings_on_exit true --cache -p application
+  - php vendor/bin/phpcs --runtime-set ignore_warnings_on_exit true --cache -p src
     tests
 after_script:
   - "./cc-test-reporter format-coverage -t clover -o build/coverage/phpunit.codeclimate.json build/coverage/phpunit/clover.xml"
-  - "./cc-test-reporter format-coverage -t clover -o build/coverage/phpspec.codeclimate.json build/coverage/phpspec/clover.xml"
   - "./cc-test-reporter sum-coverage build/coverage/*.codeclimate.json -p 2 --output build/coverage/codeclimate.json"
   - ./cc-test-reporter upload-coverage -i build/coverage/codeclimate.json;
 after_success:
   - travis_retry bash <(curl -s https://codecov.io/bash) -s build/coverage/phpunit -s build/coverage/phpspec/phpspec-coverage-xml
   - travis_retry php vendor/bin/php-coveralls
   - travis_retry bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l PHP -r build/coverage/phpunit/clover.xml
-
-env:
-  global:
-  - secure: Xzjs1hgUsef/sOKXNhbb7oq4xQAj+TOgl95uE+KjBXvj9VZ71bpFR6j/wOsbFtb71Imj3i1LQnPy5RXigvcRd2uFMnn4ybI+PRygjZr4mRmBg3W0r1P0DNvEjw9f/xbiBg2v4ivdtZYL58zUa75jOMvfAb3OGPclYggdy+GVN5E+tytLni6xZR4HJFILKY8t1ayMJ0ZQk0JQXO0Jh/GS3fvN7p5QCu26PLsp6YZytGE5HILKiOrNcCzri/ebmK4pJMkzZRP93ywf8755+C3HJscyUAHF4IR8W9oq5VbbBGqfH0/52IxmjNxly8t2IZAYMTUB6NKMpFf/kYW2q7rhY8BluFBTegJQsc8s1SILfEwgx6BitMG/o9FI++b2s44VqKPVNrLY2gDPAwXqCSUD4zfv3xPSVCl5r/q9FxrEh7QqtlYZEQdyGasJVPbF/mBOOi4NirtiRBI1rCG+OEwGbhv2oycJ7OMbKy8sVEKz4iDdsbthytMRt+X8VXmRL8G5IhJt2llKqbLSGebds0YsW4vZLwOWNns4OykXiUXBT8aXodJ2IObTPSwd8bKPwFYQiAik60SSJOZnJGwe8XKs752BQGUZdcCABJzIwrzgtZ6UXwg6VVnbjeDMnUg5gSs2O1WE/r74oTNYpfultWKt4y6jUouzBHaUtWh7V5UK388=
-  - secure: uBAHE9bSgIPnA7OIbrq5Nzhf74KFwf9YsXpuX3S6QwFgFou/TkwuaH0mqte+l4dWIvFDAVqtqZdwNs0I3kMzgjPcYqwdoFTWQe3EONxk2WY9/UEjEk0JEZ70WR/r1xn0SaH3ieRulpxqIq7weq5DscU52ZmerucfWFeAs1XXMvucSGMnWiDZ6r60Vwc8SiaPAdpnQoHQVpIqRCEN86Y/01WvMCf9x+5Pf9Oh5+aPyu7qRixq2YKTXihFjvdKtEGL1OAcyCtCp2C5yUqw13yVUfHtde+Ic3Y3UQLpHCWG/JyEJMFMyn1rHyIF3d7jMN7ApTqwLrlVYKNnbnZKi60U12yg56HMfQVC74tQnJFA/Ky7UZXv4+FKBiv49j8xs7XVnzX01PY9YYN1lgbckSvOPlsq5mxsKBCQCUY5gy+HmdgC6zJaT803rS/V058CoVbhFRyYS4B9yNOyY21W5DTvMnFb7it84R9dz/l+RxfqNOKEfHlWOzUEUiPRH11Hn3J6TJuhu4lA1AZiDwXaEMA03B5kbiPga6sR2l4W7BTlTEeIW/19bbGFbrhhDCmgkSdfVNc1VlmYVjVlYpiYspF9WTu3sEFBIEgMLXO9wnL40IurIw9pN6onNw4AHN9jXY0R1RN5q80v2HLoIzf6wZrcYcVqBsq20PAGy5+kPpVSxhE=
-  - secure: IdbXtQL6K7Dz6VDzhxRWTwShi8yeFi5zAEHX2FVPa6nWbhz2+6Oq9kMEME/gIrRzz1AbMwGAtY75KDyf3lbuZt0ijqlL9LICMInYObdQFF0yynSYDOAaXX/VmON6D34UyKo02SSLPPrDY/0zuF9NdDSVSUd6M0IRG9uj48QsHqO+iOubreqmP25TjlBSduwjf+nNMuBc4iNOLq76kHu1PEtYvyJMRDsMF5oOUHZ2dp9i3H7fa5PePJqO4AMPnWr/21iVa4JjY3FifALklBqKdDV+2VKR0wdB9PM9JiBbQJzufRYTuJ93zMcUpf2n6lqOI+91dp4FeSF+sJ4AfaBymqxhvxkn0HYypjDETYa+KceDo/+LDBe6x7glbQ9wORtMOseHYTItuJDl/hJtsR3YPo8Qanu+AMV4BD0GdSyCbiHHA+mTNS2a1Bx5nFSUzo8DTFjRQrZ88FGqdNiFqvsJeBjpLYTabGof2P778Nnhfm/A9lxQWh2+uva/oQR9AITH4i83GQlfBzjdmJdrDzGkrETSU+d1H8KHYsiCCknta0UdpFTQJcx5soSaixORCgz4DogYnjXaTapwgZGEmw8MRQXhYo6YBKQoek5fclCbqrHyglHpsfX+68pUZJK72JRtKBClKhkFz6joEzd/J8hRSYeibfzXQKPDNr8cLhRnyLA=
-  - secure: PxHenOb4NXBro0cannUVbPlVSdgmq9Boq96nqxqkL1R6wxpSJb1SnB4jgde+5oelPARkuQKBdtNf4Ua+4DpI+r7rBiaVWKxNduZvTLoQ2gVB7vX1Z8vBvKZlMOpOFKdxwD1c1IvsZ2Qb7wzXYqPB4yM22lMrhNySh3lOhP/4LsB+AsyvTHG9wBPQLeDyuD2I6kjZ073gdbITsD6ADzI3ADFAshxN0IGvYTFw6qXUX5+44ZwrngTMN0wIHuQLAtj/QCRqQKab2LAI94gz0JAUpGE6EgfMjHsj6qKVEjw35fc4mjgwz1CjL+fwE/eMSvsUlgkT/LdX1FQnukJr2nVk8T9gPx7Ydfe6R2Tpug0U0s+g/iX/owSaAAeIP5EOUrht3wZFt7bN1JpdNMHFEuSlZylM4fAKsgcuiJKXxtGl33PoS8b/YoOVJPJklPTFUTZ3oSQKGvO3mKOM7u2X2hDEVsvTKjWj2yGtJ+xDsAjzMgv6IHk4PfoTdWSxDa+55kGx5sxO2J8J1QkgFjU+84T4ETmsy2Y4L6stolsOqB1ohiyw4xTfo/z67cCoDEr+8T7xoRiuIhtqS3L2vH5LQNTtXycjE5/EoAT9zp4jLwo60USic+in/XgQ5XY2qSafMqnk+oRQNadbVrQ2Alnm1G1ejfpBCwgm+HgwFg6d7R94iiY=
